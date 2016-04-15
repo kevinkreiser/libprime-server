@@ -2,11 +2,12 @@
 
 set -e
 
+rm -rf build
 mkdir build
 pushd build
 
 #get prime_server software
-sudo apt-get install autoconf automake libtool make gcc-4.9 g++-4.9 lcov
+#sudo apt-get install autoconf automake libtool make gcc-4.9 g++-4.9 lcov
 sudo apt-get install libcurl4-openssl-dev libzmq3-dev
 git clone --branch 0.3.2 --recursive  https://github.com/kevinkreiser/prime_server.git
 tar pczf prime_server.tar.gz prime_server
@@ -21,7 +22,7 @@ popd
 sudo apt-get install dh-make bzr-builddeb
 bzr dh-make libprime-server 0.3.2 prime_server.tar.gz
 rm -rf libprime-server/debian
-cp -rp debian libprime-server
+cp -rp ../debian libprime-server
 pushd libprime-server
 bzr add debian/source/format
 bzr commit -m "Initial commit of Debian packaging."
