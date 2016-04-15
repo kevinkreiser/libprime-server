@@ -1,0 +1,5 @@
+libprime-server (0.3.2-1) trusty; urgency=low
+
+  * DNT header bit added to request_info
+
+ -- Kevin Kreiser <kevinkreiser@gmail.com>  Fri, 15 Apr 2016 09:15:49 -0400
