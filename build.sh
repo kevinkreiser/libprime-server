@@ -19,6 +19,7 @@ pushd prime_server
 make -j
 sudo make install
 popd
+rm -rf prime_server
 
 #start building the package
 sudo apt-get install dh-make bzr-builddeb
