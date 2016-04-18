@@ -1,4 +1,4 @@
-libprime-server (0.3.2-1) trusty; urgency=low
+libprime-server (0.3.2-0ubuntu1) trusty; urgency=low
 
   * DNT header bit added to request_info
 
