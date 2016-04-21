@@ -8,7 +8,7 @@ Homepage: https://github.com/kevinkreiser/prime_server
 Vcs-Git: git://github.com/kevinkreiser/prime_server.git
 
 Package: libprime-server-dev
-Section: libdevel
+Section: contrib/libdevel
 Architecture: any
 Depends: libprime-server0 (= ${binary:Version}), ${misc:Depends}
 Description: Service oriented distributed computing API
@@ -16,7 +16,7 @@ Description: Service oriented distributed computing API
  specifically focused on servicing http requests
 
 Package: libprime-server0
-Section: libs
+Section: contrib/libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Service oriented distributed computing API
@@ -24,7 +24,7 @@ Description: Service oriented distributed computing API
  specifically focused on servicing http requests
 
 Package: prime-server-bin
-Section: optional
+Section: contrib/misc
 Architecture: any
 Depends: libprime-server0 (= ${binary:Version}), ${misc:Depends}
 Description: Service oriented distributed computing executables
