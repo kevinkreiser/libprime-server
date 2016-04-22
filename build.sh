@@ -1,5 +1,11 @@
 #!/bin/bash
 
+#the main place for info on how to do this is here: http://packaging.ubuntu.com/html/index.html
+#section 2. launchpad here: http://packaging.ubuntu.com/html/getting-set-up.html
+#section 6. packaging here: http://packaging.ubuntu.com/html/packaging-new-software.html
+
+#massive thanks to @sneetsher for finding and fixing all of my mistakes!
+
 set -e
 
 rm -rf build
@@ -22,11 +28,15 @@ pushd libprime-server
 bzr add debian
 bzr commit -m "Initial commit of Debian packaging."
 bzr builddeb -- -us -uc
-#TODO: sign the package
+#bzr builddeb -S
 popd
 
-#TODO: push the package to the ppa
+#make sure it will work in a clean environment
+#pbuilder-dist trusty build libprime-server_0.3.2-0ubuntu1.dsc
 
-#TODO: make an ITP for inclusion in mainline
+#push the package to the ppa
+#dput ppa:kevinkreiser/prime-server
+
+#TOOD: push a branch to launchpad for review
 
 popd
