@@ -19,7 +19,7 @@ bzr dh-make libprime-server 0.3.2 prime_server.tar.gz
 rm -rf libprime-server/debian
 cp -rp ../debian libprime-server
 pushd libprime-server
-bzr add debian/source/format
+bzr add debian
 bzr commit -m "Initial commit of Debian packaging."
 bzr builddeb -- -us -uc
 #TODO: sign the package
