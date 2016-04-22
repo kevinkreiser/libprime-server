@@ -10,7 +10,7 @@ Vcs-Git: git://github.com/kevinkreiser/prime_server.git
 Package: libprime-server-dev
 Section: contrib/libdevel
 Architecture: any
-Depends: libprime-server0 (= ${binary:Version}), ${misc:Depends}
+Depends: libprime-server0 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
 Description: Service oriented distributed computing API
  A set of APIs designed around the zeromq butterfly pattern
  specifically focused on servicing http requests
@@ -18,7 +18,7 @@ Description: Service oriented distributed computing API
 Package: libprime-server0
 Section: contrib/libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Service oriented distributed computing API
  A set of APIs designed around the zeromq butterfly pattern
  specifically focused on servicing http requests
