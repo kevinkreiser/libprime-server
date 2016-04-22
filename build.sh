@@ -34,6 +34,9 @@ popd
 #make sure it will work in a clean environment
 #pbuilder-dist trusty build libprime-server_0.3.2-0ubuntu1.dsc
 
+#have to have a branch of the code up there or you cant use the ppa
+#bzr push lp:~kevinkreiser/+junk/prime-server-package
+
 #push the package to the ppa
 #dput ppa:kevinkreiser/prime-server
 
