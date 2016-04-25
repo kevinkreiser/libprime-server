@@ -8,25 +8,31 @@
 
 set -e
 
+#get a bunch of stuff we'll need to build the code as well as make the packages
+sudo apt-get install autoconf automake libtool make gcc g++ lcov dh-make dh-autoreconf bzr-builddeb libcurl4-openssl-dev libzmq3-dev
+
 rm -rf build
 mkdir build
 pushd build
 
-#get prime_server software
-#sudo apt-get install autoconf automake libtool make gcc-4.9 g++-4.9 lcov
-sudo apt-get install libcurl4-openssl-dev libzmq3-dev
+#get prime_server code into the form bzr likes
 git clone --branch 0.3.2 --recursive  https://github.com/kevinkreiser/prime_server.git
 tar pczf prime_server.tar.gz prime_server
 rm -rf prime_server
 
 #start building the package
-sudo apt-get install dh-make dh-autoreconf bzr-builddeb
 bzr dh-make libprime-server 0.3.2 prime_server.tar.gz
+
+#bzr will make you a template to fill out but who wants to do that manually?
 rm -rf libprime-server/debian
 cp -rp ../debian libprime-server
+
+#add the stuff to the bzr repository
 pushd libprime-server
 bzr add debian
 bzr commit -m "Initial commit of Debian packaging."
+
+#build the packages
 bzr builddeb -- -us -uc
 
 #sign the packages using your fingerprint
