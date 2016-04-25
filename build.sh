@@ -20,8 +20,16 @@ git clone --branch 0.3.2 --recursive  https://github.com/kevinkreiser/prime_serv
 tar pczf prime_server.tar.gz prime_server
 rm -rf prime_server
 
-#start building the package
-bzr dh-make libprime-server 0.3.2 prime_server.tar.gz
+#tell bzr who we are
+export DEBFULLNAME='Kevin Kreiser'
+export DEBEMAIL='kevinkreiser@gmail.com'
+bzr whoami "${DEBFULLNAME} <${DEBEMAIL}>"
+
+#start building the package, choose l(ibrary) for the type
+bzr dh-make libprime-server 0.3.2 prime_server.tar.gz << EOF
+l
+
+EOF
 
 #bzr will make you a template to fill out but who wants to do that manually?
 rm -rf libprime-server/debian
