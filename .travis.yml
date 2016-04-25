@@ -1,8 +1,5 @@
 sudo: required
 dist: trusty
-language: cpp
-compiler:
-env:
 before_install:
 install:
 before_script:
