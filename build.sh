@@ -9,7 +9,7 @@
 set -e
 
 #get a bunch of stuff we'll need to build the code as well as make the packages
-sudo apt-get install autoconf automake libtool make gcc g++ lcov dh-make dh-autoreconf bzr-builddeb libcurl4-openssl-dev libzmq3-dev
+sudo apt-get install -y autoconf automake libtool make gcc g++ lcov dh-make dh-autoreconf bzr-builddeb libcurl4-openssl-dev libzmq3-dev
 
 rm -rf build
 mkdir build
