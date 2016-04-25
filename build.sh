@@ -28,10 +28,13 @@ pushd libprime-server
 bzr add debian
 bzr commit -m "Initial commit of Debian packaging."
 bzr builddeb -- -us -uc
+
+#sign the packages using your fingerprint
 #bzr builddeb -S
 popd
 
 #make sure it will work in a clean environment
+#setup with: pbuilder-dist trusty create
 #pbuilder-dist trusty build libprime-server_0.3.2-0ubuntu1.dsc
 
 #have to have a branch of the code up there or you cant use the ppa
