@@ -10,7 +10,7 @@ set -e
 
 VERSION=$(cat version)
 RELEASES=$(cat releases)
-PACKAGE_VERSION=0ubuntu1
+PACKAGE_VERSION=$(cat package_version)
 
 #get a bunch of stuff we'll need to  make the packages
 sudo apt-get install -y dh-make dh-autoreconf bzr-builddeb pbuilder ubuntu-dev-tools debootstrap devscripts
@@ -53,13 +53,7 @@ bzr builddeb -- -us -uc -j$(grep -c ^processor /proc/cpuinfo)
 
 #have to have a branch of the code up there or you cant use the ppa
 #bzr push lp:~kevinkreiser/+junk/prime-server-package
-
-#sign the packages using your fingerprint
-#bzr builddeb -S
 popd
-
-#push the package to the ppa
-#dput ppa:kevinkreiser/prime-server libprime-server_${VERSION}-${PACKAGE_VERSION}_source.changes
 popd
 ######################################################
 
