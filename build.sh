@@ -13,7 +13,7 @@ RELEASES=$(cat releases)
 PACKAGE_VERSION=0ubuntu1
 
 #get a bunch of stuff we'll need to  make the packages
-sudo apt-get install -y dh-make dh-autoreconf bzr-builddeb pbuilder debootstrap devscripts
+sudo apt-get install -y dh-make dh-autoreconf bzr-builddeb pbuilder ubuntu-dev-tools debootstrap devscripts
 #get the stuff we need to build the software
 sudo apt-get install -y autoconf automake pkg-config libtool make gcc g++ lcov libcurl4-openssl-dev libzmq3-dev
 
