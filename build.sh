@@ -1,62 +1,17 @@
 #!/bin/bash
 set -e
 
-#the main place for info on how to do this is here: http://packaging.ubuntu.com/html/index.html
-#section 2. launchpad here: http://packaging.ubuntu.com/html/getting-set-up.html
-#section 6. packaging here: http://packaging.ubuntu.com/html/packaging-new-software.html
-
-#massive thanks to @sneetsher for finding and fixing all of my mistakes!
-
-
 VERSION=$(cat version)
 RELEASES=$(cat releases)
 PACKAGE_VERSION=$(cat package_version)
 
 #get a bunch of stuff we'll need to  make the packages
-sudo apt-get install -y dh-make dh-autoreconf bzr-builddeb pbuilder ubuntu-dev-tools debootstrap devscripts
-#get the stuff we need to build the software
-sudo apt-get install -y autoconf automake pkg-config libtool make gcc g++ lcov libcurl4-openssl-dev libzmq3-dev
+sudo apt-get install -y git dh-make dh-autoreconf bzr-builddeb pbuilder ubuntu-dev-tools debootstrap devscripts
 
-#tell bzr who we are
-export DEBFULLNAME='Kevin Kreiser'
-export DEBEMAIL='kevinkreiser@gmail.com'
-bzr whoami "${DEBFULLNAME} <${DEBEMAIL}>"
-source /etc/lsb-release
-
-######################################################
-#SEE IF WE CAN BUILD THE PACKAGE FOR OUR LOCAL RELEASE
-rm -rf local_build
-mkdir local_build
-pushd local_build
 #get prime_server code into the form bzr likes
-git clone --branch ${VERSION} --recursive  https://github.com/kevinkreiser/prime_server.git
-tar pczf prime_server.tar.gz prime_server
-
-#start building the package, choose l(ibrary) for the type
-bzr dh-make libprime-server ${VERSION} prime_server.tar.gz << EOF
-l
-
-EOF
-
-#bzr will make you a template to fill out but who wants to do that manually?
-rm -rf libprime-server/debian
-cp -rp ../debian libprime-server
-sed -i -e "s/(.*) [a-z]\+;/(${VERSION}-${PACKAGE_VERSION}~${DISTRIB_CODENAME}1) ${DISTRIB_CODENAME};/g" libprime-server/debian/changelog
-
-#add the stuff to the bzr repository
-pushd libprime-server
-bzr add debian
-bzr commit -m "Initial commit of Debian packaging."
-
-#build the packages
-bzr builddeb -- -us -uc -j$(grep -c ^processor /proc/cpuinfo)
-
-#have to have a branch of the code up there or you cant use the ppa
-#bzr push lp:~kevinkreiser/+junk/prime-server-package
-popd
-popd
-######################################################
-
+git clone --branch ${VERSION} --recursive  https://github.com/kevinkreiser/prime_server.git libprime-server
+tar pczf libprime-server_${VERSION}.orig.tar.gz libprime-server
+rm -rf libprime-server
 
 ######################################################
 #LETS BUILD THE PACKAGE FOR SEVERAL RELEASES
@@ -66,38 +21,15 @@ for release in ${RELEASES}; do
 	pushd ${release}_build
 
 	#copy source targz
-	cp -rp ../local_build/libprime-server_${VERSION}.orig.tar.gz .
+	cp -rp ../libprime-server_${VERSION}.orig.tar.gz .
+	tar pxf libprime-server_${VERSION}.orig.tar.gz
 
-	#copy debian, update changelog and turn into a targz
-	cp -rp ../debian .
+	#build the dsc and source.change files
+	pushd libprime-server
+	cp -rp ../../debian .
 	sed -i -e "s/(.*) [a-z]\+;/(${VERSION}-${PACKAGE_VERSION}~${release}1) ${release};/g" debian/changelog
-	tar pczf libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.debian.tar.gz debian
-
-	#generate dsc file
-	echo "Format: $(cat debian/source/format)" > libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
-	grep -F Source: debian/control >> libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
-	echo "Binary: $(grep -F Package: debian/control | sed -e "s/Package: //g" | tr '\n' ' ' | sed -e "s/ $//g" -e "s/ /, /g")" >> libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
-	grep -m1 -F Architecture: debian/control >> libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
-	echo "Version: ${VERSION}-${PACKAGE_VERSION}~${release}1" >> libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
-	grep -F Maintainer: debian/control >> libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
-	grep -F Homepage: debian/control >> libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
-	grep -F Standards-Version: debian/control >> libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
-	grep -F Vcs-Git: debian/control >> libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
-	grep -F Build-Depends: debian/control >> libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
-	echo "Package-List: " >> libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
-	for package in $(grep -F Package: debian/control | sed -e "s/Package: //g" | tr '\n' ' '); do
-		section=$(tail -n +$(grep -m1 -n -F ${package} debian/control | cut -f1 -d:) debian/control | grep -m1 -F Section: | sed -e "s/Section: //g")
-		echo " ${package} deb ${section} $(grep -F Priority: debian/control | sed -e "s/Priority: //g")" >> libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
-	done
-	echo "Checksums-Sha1: " >> libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
-	echo " $(sha1sum libprime-server_${VERSION}.orig.tar.gz | sed -e "s/ \+/ $(wc -c < libprime-server_${VERSION}.orig.tar.gz) /g")" >> libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
-	echo " $(sha1sum libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.debian.tar.gz | sed -e "s/ \+/ $(wc -c < libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.debian.tar.gz) /g")" >> libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
-        echo "Checksums-Sha256: " >> libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
-	echo " $(sha256sum libprime-server_${VERSION}.orig.tar.gz | sed -e "s/ \+/ $(wc -c < libprime-server_${VERSION}.orig.tar.gz) /g")" >> libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
-	echo " $(sha256sum libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.debian.tar.gz | sed -e "s/ \+/ $(wc -c < libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.debian.tar.gz) /g")" >> libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
-        echo "Files: " >> libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
-	echo " $(md5sum libprime-server_${VERSION}.orig.tar.gz | sed -e "s/ \+/ $(wc -c < libprime-server_${VERSION}.orig.tar.gz) /g")" >> libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
-	echo " $(md5sum libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.debian.tar.gz | sed -e "s/ \+/ $(wc -c < libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.debian.tar.gz) /g")" >> libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
+	debuild -S -uc -sa
+	popd
 
 	#make sure we support this release
 	if [ ! -e ~/pbuilder/${release}-base.tgz ]; then
@@ -105,7 +37,7 @@ for release in ${RELEASES}; do
 	fi
 
 	#try to build a package for it
-	pbuilder-dist ${release} build libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
+	DEB_BUILD_OPTIONS="parallel=$(nproc)" pbuilder-dist ${release} build libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
 	popd
 done
 ######################################################
