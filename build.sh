@@ -37,7 +37,7 @@ for release in ${RELEASES}; do
 	fi
 
 	#try to build a package for it
-	pbuilder-dist ${release} build libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
+	DEB_BUILD_OPTIONS="parallel=$(nproc)" pbuilder-dist ${release} build libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
 	popd
 done
 ######################################################

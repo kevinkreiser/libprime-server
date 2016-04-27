@@ -49,7 +49,7 @@ bzr add debian
 bzr commit -m "Packaging for ${VERSION}-${PACKAGE_VERSION}."
 
 #build the packages
-bzr builddeb -- -us -uc -j$(grep -c ^processor /proc/cpuinfo)
+bzr builddeb -- -us -uc -j$(nproc)
 popd
 popd
 ######################################################
