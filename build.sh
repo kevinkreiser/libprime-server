@@ -3,7 +3,7 @@ set -e
 
 VERSION=$(cat version)
 RELEASES=$(cat releases)
-PACKAGE_VERSION=$(cat package_version)
+REVISION=$(cat revision)
 
 #get a bunch of stuff we'll need to  make the packages
 sudo apt-get install -y git dh-make dh-autoreconf bzr-builddeb pbuilder ubuntu-dev-tools debootstrap devscripts
@@ -27,7 +27,7 @@ for release in ${RELEASES}; do
 	#build the dsc and source.change files
 	pushd libprime-server
 	cp -rp ../../debian .
-	sed -i -e "s/(.*) [a-z]\+;/(${VERSION}-${PACKAGE_VERSION}~${release}1) ${release};/g" debian/changelog
+	sed -i -e "s/(.*) [a-z]\+;/(${VERSION}-0ubuntu${REVISION}~${release}${REVISION}) ${release};/g" debian/changelog
 	debuild -S -uc -sa
 	popd
 
@@ -37,7 +37,7 @@ for release in ${RELEASES}; do
 	fi
 
 	#try to build a package for it
-	DEB_BUILD_OPTIONS="parallel=$(nproc)" pbuilder-dist ${release} build libprime-server_${VERSION}-${PACKAGE_VERSION}~${release}1.dsc
+	DEB_BUILD_OPTIONS="parallel=$(nproc)" pbuilder-dist ${release} build libprime-server_${VERSION}-0ubuntu${REVISION}~${release}${REVISION}.dsc
 	popd
 done
 ######################################################

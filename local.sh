@@ -10,7 +10,7 @@ set -e
 
 VERSION=$(cat version)
 RELEASES=$(cat releases)
-PACKAGE_VERSION=$(cat package_version)
+REVISION=$(cat revision)
 
 #get a bunch of stuff we'll need to  make the packages
 sudo apt-get install -y dh-make dh-autoreconf bzr-builddeb pbuilder ubuntu-dev-tools debootstrap devscripts
@@ -41,12 +41,12 @@ EOF
 #bzr will make you a template to fill out but who wants to do that manually?
 rm -rf libprime-server/debian
 cp -rp ../debian libprime-server
-sed -i -e "s/(.*) [a-z]\+;/(${VERSION}-${PACKAGE_VERSION}~${DISTRIB_CODENAME}1) ${DISTRIB_CODENAME};/g" libprime-server/debian/changelog
+sed -i -e "s/(.*) [a-z]\+;/(${VERSION}-0ubuntu${REVISION}~${DISTRIB_CODENAME}${REVISION}) ${DISTRIB_CODENAME};/g" libprime-server/debian/changelog
 
 #add the stuff to the bzr repository
 pushd libprime-server
 bzr add debian
-bzr commit -m "Packaging for ${VERSION}-${PACKAGE_VERSION}."
+bzr commit -m "Packaging for ${VERSION}-0ubuntu${REVISION}."
 
 #build the packages
 bzr builddeb -- -us -uc -j$(nproc)
