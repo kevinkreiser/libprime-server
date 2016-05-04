@@ -10,7 +10,6 @@ set -e
 
 VERSION=$(cat version)
 RELEASES=$(cat releases)
-REVISION=$(cat revision)
 
 #get a bunch of stuff we'll need to  make the packages
 sudo apt-get install -y dh-make dh-autoreconf bzr-builddeb pbuilder ubuntu-dev-tools debootstrap devscripts
@@ -29,11 +28,18 @@ rm -rf local_build
 mkdir local_build
 pushd local_build
 #get prime_server code into the form bzr likes
-git clone --branch ${VERSION} --recursive  https://github.com/kevinkreiser/prime_server.git
-tar pczf prime_server.tar.gz prime_server
+git clone --branch ${VERSION} --recursive  https://github.com/kevinkreiser/prime_server.git libprime-server
+pushd libprime-server
+echo -e "libprime-server (${VERSION}-0ubuntu1~${DISTRIB_CODENAME}1) ${DISTRIB_CODENAME}; urgency=low\n" > ../../debian/changelog
+git log --pretty="  * %s" --no-merges $(git tag | grep -FB1 ${VERSION} | head -n 1)..${VERSION} >> ../../debian/changelog
+echo -e "\n -- ${DEBFULLNAME} <${DEBEMAIL}>  $(date -u +"%a, %d %b %Y %T %z")" >> ../../debian/changelog
+find -name .git | xargs rm -rf
+popd
+tar pczf libprime-server.tar.gz libprime-server
+rm -rf libprime-server
 
 #start building the package, choose l(ibrary) for the type
-bzr dh-make libprime-server ${VERSION} prime_server.tar.gz << EOF
+bzr dh-make libprime-server ${VERSION} libprime-server.tar.gz << EOF
 l
 
 EOF
@@ -41,12 +47,11 @@ EOF
 #bzr will make you a template to fill out but who wants to do that manually?
 rm -rf libprime-server/debian
 cp -rp ../debian libprime-server
-sed -i -e "s/(.*) [a-z]\+;/(${VERSION}-0ubuntu${REVISION}~${DISTRIB_CODENAME}${REVISION}) ${DISTRIB_CODENAME};/g" libprime-server/debian/changelog
 
 #add the stuff to the bzr repository
 pushd libprime-server
 bzr add debian
-bzr commit -m "Packaging for ${VERSION}-0ubuntu${REVISION}."
+bzr commit -m "Packaging for ${VERSION}-0ubuntu1."
 
 #build the packages
 bzr builddeb -- -us -uc -j$(nproc)
