@@ -22,34 +22,40 @@ export DEBEMAIL='kevinkreiser@gmail.com'
 bzr whoami "${DEBFULLNAME} <${DEBEMAIL}>"
 source /etc/lsb-release
 
+#versioned package name
+PACKAGE="$(if [[ "${1}" == "--versioned-name" ]]; then echo libprime-server${VERSION}; else echo libprime-server; fi)"
+
 ######################################################
 #SEE IF WE CAN BUILD THE PACKAGE FOR OUR LOCAL RELEASE
 rm -rf local_build
 mkdir local_build
 pushd local_build
 #get prime_server code into the form bzr likes
-git clone --branch ${VERSION} --recursive  https://github.com/kevinkreiser/prime_server.git libprime-server
-pushd libprime-server
+git clone --branch ${VERSION} --recursive  https://github.com/kevinkreiser/prime_server.git ${PACKAGE}
+pushd ${PACKAGE}
 echo -e "libprime-server (${VERSION}-0ubuntu1~${DISTRIB_CODENAME}1) ${DISTRIB_CODENAME}; urgency=low\n" > ../../debian/changelog
 git log --pretty="  * %s" --no-merges $(git tag | grep -FB1 ${VERSION} | head -n 1)..${VERSION} >> ../../debian/changelog
 echo -e "\n -- ${DEBFULLNAME} <${DEBEMAIL}>  $(date -u +"%a, %d %b %Y %T %z")" >> ../../debian/changelog
 find -name .git | xargs rm -rf
 popd
-tar pczf libprime-server.tar.gz libprime-server
-rm -rf libprime-server
+tar pczf ${PACKAGE}.tar.gz ${PACKAGE}
+rm -rf ${PACKAGE}
 
 #start building the package, choose l(ibrary) for the type
-bzr dh-make libprime-server ${VERSION} libprime-server.tar.gz << EOF
+bzr dh-make ${PACKAGE} ${VERSION} ${PACKAGE}.tar.gz << EOF
 l
 
 EOF
 
 #bzr will make you a template to fill out but who wants to do that manually?
-rm -rf libprime-server/debian
-cp -rp ../debian libprime-server
+rm -rf ${PACKAGE}/debian
+cp -rp ../debian ${PACKAGE}
+if [[ "${1}" == "--versioned-name" ]]; then
+	sed -i -e "s/prime-server/prime-server${VERSION}/g" -e "s/prime-server${VERSION}\([0-9]\+\)/prime-server${VERSION}.\1/g" ${PACKAGE}/debian/control ${PACKAGE}/debian/changelog
+fi
 
 #add the stuff to the bzr repository
-pushd libprime-server
+pushd ${PACKAGE}
 bzr add debian
 bzr commit -m "Packaging for ${VERSION}-0ubuntu1."
 
