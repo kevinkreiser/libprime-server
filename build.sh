@@ -38,6 +38,11 @@ for release in ${RELEASES[@]}; do
 	cp -rp ../../debian .
 	sed -i -e "s/(.*) [a-z]\+;/(${VERSION}-0ubuntu1~${release}1) ${release};/g" debian/changelog
 	if [[ "${1}" == "--versioned-name" ]]; then
+		for p in $(grep -F Package ${PACKAGE}/debian/control | sed -e "s/.*: //g"); do
+			for ext in .dirs .install; do
+				mv ${PACKAGE}/debian/${p}${ext} ${PACKAGE}/debian/$(echo ${p} | sed -e "s/prime-server/prime-server${VERSION}/g" -e "s/prime-server${VERSION}\([0-9]\+\)/prime-server${VERSION}.\1/g")${ext}
+			done
+		done
 		sed -i -e "s/prime-server/prime-server${VERSION}/g" -e "s/prime-server${VERSION}\([0-9]\+\)/prime-server${VERSION}.\1/g" debian/control debian/changelog
 	fi
 	debuild -S -uc -sa
