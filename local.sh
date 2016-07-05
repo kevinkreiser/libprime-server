@@ -33,7 +33,11 @@ pushd local_build
 #get prime_server code into the form bzr likes
 git clone --branch ${VERSION} --recursive  https://github.com/kevinkreiser/prime_server.git ${PACKAGE}
 pushd ${PACKAGE}
-echo -e "libprime-server (${VERSION}-0ubuntu1~${DISTRIB_CODENAME}1) ${DISTRIB_CODENAME}; urgency=low\n" > ../../debian/changelog
+if [[ "${1}" == "--versioned-name" ]]; then
+	echo -e "libprime-server${VERSION} (${VERSION}-0ubuntu1~${DISTRIB_CODENAME}1) ${DISTRIB_CODENAME}; urgency=low\n" > ../../debian/changelog
+else
+	echo -e "libprime-server (${VERSION}-0ubuntu1~${DISTRIB_CODENAME}1) ${DISTRIB_CODENAME}; urgency=low\n" > ../../debian/changelog
+fi
 git log --pretty="  * %s" --no-merges $(git tag | grep -FB1 ${VERSION} | head -n 1)..${VERSION} >> ../../debian/changelog
 echo -e "\n -- ${DEBFULLNAME} <${DEBEMAIL}>  $(date -u +"%a, %d %b %Y %T %z")" >> ../../debian/changelog
 find -name .git | xargs rm -rf
@@ -53,10 +57,10 @@ cp -rp ../debian ${PACKAGE}
 if [[ "${1}" == "--versioned-name" ]]; then
 	for p in $(grep -F Package ${PACKAGE}/debian/control | sed -e "s/.*: //g"); do
 		for ext in .dirs .install; do
-			mv ${PACKAGE}/debian/${p}${ext} ${PACKAGE}/debian/$(echo ${p} | sed -e "s/prime-server/prime-server${VERSION}/g" -e "s/prime-server${VERSION}\([0-9]\+\)/prime-server${VERSION}.\1/g")${ext}
+			mv ${PACKAGE}/debian/${p}${ext} ${PACKAGE}/debian/$(echo ${p} | sed -e "s/prime-server/prime-server${VERSION}/g" -e "s/prime-server${VERSION}\([0-9]\+\)/prime-server${VERSION}-\1/g")${ext}
 		done
 	done
-	sed -i -e "s/prime-server/prime-server${VERSION}/g" -e "s/prime-server${VERSION}\([0-9]\+\)/prime-server${VERSION}.\1/g" ${PACKAGE}/debian/control ${PACKAGE}/debian/changelog
+	sed -i -e "s/prime-server/prime-server${VERSION}/g" -e "s/prime-server${VERSION}\([0-9]\+\)/prime-server${VERSION}-\1/g" ${PACKAGE}/debian/control ${PACKAGE}/debian/changelog
 fi
 
 #add the stuff to the bzr repository

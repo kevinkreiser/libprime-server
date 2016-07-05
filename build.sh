@@ -40,10 +40,10 @@ for release in ${RELEASES[@]}; do
 	if [[ "${1}" == "--versioned-name" ]]; then
 		for p in $(grep -F Package ${PACKAGE}/debian/control | sed -e "s/.*: //g"); do
 			for ext in .dirs .install; do
-				mv ${PACKAGE}/debian/${p}${ext} ${PACKAGE}/debian/$(echo ${p} | sed -e "s/prime-server/prime-server${VERSION}/g" -e "s/prime-server${VERSION}\([0-9]\+\)/prime-server${VERSION}.\1/g")${ext}
+				mv ${PACKAGE}/debian/${p}${ext} ${PACKAGE}/debian/$(echo ${p} | sed -e "s/prime-server/prime-server${VERSION}/g" -e "s/prime-server${VERSION}\([0-9]\+\)/prime-server${VERSION}-\1/g")${ext}
 			done
 		done
-		sed -i -e "s/prime-server/prime-server${VERSION}/g" -e "s/prime-server${VERSION}\([0-9]\+\)/prime-server${VERSION}.\1/g" debian/control debian/changelog
+		sed -i -e "s/prime-server/prime-server${VERSION}/g" -e "s/prime-server${VERSION}\([0-9]\+\)/prime-server${VERSION}-\1/g" debian/control debian/changelog
 	fi
 	debuild -S -uc -sa
 	popd
@@ -54,7 +54,7 @@ for release in ${RELEASES[@]}; do
 	fi
 
 	#try to build a package for it
-	DEB_BUILD_OPTIONS="parallel=$(nproc)" pbuilder-dist ${release} build ${PACKAGE}_${VERSION}-0ubuntu1~${release}1.dsc
+	DEB_BUILD_OPTIONS="parallel=$(nproc)" pbuilder-dist ${release} build ${PACKAGE}_${VERSION}-0ubuntu1~${release}1.dsc --hookdir=../hooks
 	popd
 done
 ######################################################
