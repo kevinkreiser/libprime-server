@@ -4,5 +4,12 @@ before_install:
 install:
 before_script:
 script:
-  ./build.sh
+  - ./package.sh ${DISTRIBUTION} ${ARCHITECTURE}
 after_failure:
+after_success:
+env:
+  matrix:
+    - DISTRIBUTIONS=trusty ARCHITECTURES=i386
+    - DISTRIBUTIONS=xenial ARCHITECTURES=i386
+    - DISTRIBUTIONS=trusty ARCHITECTURES=amd64
+    - DISTRIBUTIONS=xenial ARCHITECTURES=amd64

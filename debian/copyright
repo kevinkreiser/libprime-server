@@ -2,7 +2,7 @@ Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: libprime-server
 Source: https://github.com/kevinkreiser/prime_server
 
-Files: debian/*
+Files: *
 Copyright: 2016 Kevin Kreiser <kevinkreiser@gmail.com>
 License: BSD-2-clause
  Copyright (c) 2015, Kevin Kreiser

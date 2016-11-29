@@ -1,21 +1,23 @@
 #!/bin/bash
 set -e
 
+#get all of the packages ready
+NO_BUILD=true ./package.sh "${1}"
+IFS=',' read -r -a DISTRIBUTIONS <<< "${1}"
 VERSION=$(cat version)
-RELEASES=( $(cat releases) )
 
 #have to have a branch of the code up there or the packages wont work from the ppa
-if [[ "${1}" != "--no-branch" ]]; then
-	pushd $(find ${RELEASES[0]}_build/* -maxdepth 0 -type d)
-	bzr init
-	bzr add
-	bzr commit -m "Packaging for ${VERSION}-0ubuntu1."
-	bzr push --overwrite bzr+ssh://kevinkreiser@bazaar.launchpad.net/~kevinkreiser/+junk/prime-server_${VERSION}-0ubuntu1
-	popd
-fi
+cd ${DISTRIBUTIONS[0]}/unpinned
+bzr init
+bzr add
+bzr commit -m "Packaging for ${VERSION}-0ubuntu1."
+bzr push --overwrite bzr+ssh://kevinkreiser@bazaar.launchpad.net/~kevinkreiser/+junk/valhalla_${VERSION}-0ubuntu1
+cd -
 
 #sign and push each package to launchpad
-for release in ${RELEASES[@]}; do
-	debsign ${release}_build/*source.changes
-	dput ppa:kevinkreiser/prime-server ${release}_build/*source.changes
+for dist in ${DISTRIBUTIONS[@]}; do
+	for pin in pinned unpinned; do
+		debsign ${dist}/${pin}/*source.changes
+		dput ppa:valhalla-routing/valhalla ${dist}/${pin}/*source.changes
+	done
 done
