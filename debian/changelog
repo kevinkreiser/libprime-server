@@ -1,0 +1,7 @@
+libprime-server (0.3.5-0ubuntu1~unstable1) unstable; urgency=low
+
+  * update version for logging change
+  * update prime_server to latest v0 logging
+  * replace regex with bsd sed compatible one
+
+ -- Kevin Kreiser <kevinkreiser@gmail.com>  Fri, 14 Oct 2016 13:28:36 +0000
