@@ -50,6 +50,7 @@ for with_version in false true; do
 	#build the dsc and source.change files
 	cd ${target_dir}/${PACKAGE}
 	cp -rp ../../../debian .
+        ls -al debian/*
         sed -i -e "s/unstable/${DISTRIBUTION}/g" debian/changelog
 	#add the version to the package names
 	if [[ ${with_version} == true ]]; then
