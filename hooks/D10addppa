@@ -1,6 +1,6 @@
 #!/bin/sh
 apt-get install -y software-properties-common
-if [[ $(grep -cF trusty /etc/lsb-release) > 0 ]]; then
+if [ $(grep -cF trusty /etc/lsb-release) > 0 ]; then
   for repo in libsodium libpgm zeromq3 czmq; do
     add-apt-repository -y ppa:kevinkreiser/${repo}
     apt-get update -o Dir::Etc::sourcelist="sources.list.d/kevinkreiser-${repo}-$(lsb_release -c -s).list" -o APT::Get::List-Cleanup="0"
