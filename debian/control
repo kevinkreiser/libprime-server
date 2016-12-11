@@ -1,7 +1,7 @@
 Source: libprime-server
 Priority: optional
 Maintainer: Kevin Kreiser <kevinkreiser@gmail.com>
-Build-Depends: debhelper (>= 9), autotools-dev, dh-autoreconf, pkg-config, libcurl4-openssl-dev, libzmq3-dev
+Build-Depends: debhelper (>= 9), autotools-dev, dh-autoreconf, pkg-config, libcurl4-openssl-dev, libzmq3-dev, libczmq-dev
 Standards-Version: 3.9.5
 Section: libs
 Homepage: https://github.com/kevinkreiser/prime_server
@@ -18,7 +18,7 @@ Description: Service oriented distributed computing API
 Package: libprime-server0
 Section: contrib/libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, libzmq5, libczmq
 Description: Service oriented distributed computing API
  A set of APIs designed around the zeromq butterfly pattern
  specifically focused on servicing http requests
