@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/kevinkreiser/ppa-libprime-server.svg?branch=master)](https://travis-ci.org/kevinkreiser/ppa-libprime-server)
+[![Build Status](https://travis-ci.org/kevinkreiser/libprime-server.svg?branch=master)](https://travis-ci.org/kevinkreiser/libprime-server)
 
 What is this?
 -------------
