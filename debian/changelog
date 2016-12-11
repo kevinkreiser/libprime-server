@@ -1,3 +1,9 @@
+libprime-server (0.6.0-0ubuntu1~unstable1) unstable; urgency=medium
+
+  * request cancellation via disconnect or timeout
+
+ -- Kevin Kreiser <kevinkreiser@gmail.com>  Sun, 11 Dec 2016 14:41:56 -0500
+
 libprime-server (0.4.0-0ubuntu1~unstable1) unstable; urgency=medium
 
   * allow traffic shaping at the load balancer proxy
