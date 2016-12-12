@@ -74,7 +74,7 @@ for with_version in false true; do
 
 		#try to build a package for it
 		cd ${target_dir}
-		DEB_BUILD_OPTIONS="parallel=$(nproc)" pbuilder-dist ${DISTRIBUTION} ${ARCHITECTURE} build ${PACKAGE}_${VERSION}-0ubuntu1~${DISTRIBUTION}1.dsc
+		DEB_BUILD_OPTIONS="parallel=$(nproc)" pbuilder-dist ${DISTRIBUTION} ${ARCHITECTURE} build ${PACKAGE}_${VERSION}-0ubuntu1~${DISTRIBUTION}*.dsc
 		cd -
 	fi
 done
