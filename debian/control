@@ -18,7 +18,7 @@ Description: Service oriented distributed computing API
 Package: libprime-server0
 Section: contrib/libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libzmq5, libczmq
+Depends: ${shlibs:Depends}, ${misc:Depends}, libzmq5, libczmq3
 Description: Service oriented distributed computing API
  A set of APIs designed around the zeromq butterfly pattern
  specifically focused on servicing http requests
