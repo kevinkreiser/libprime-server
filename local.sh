@@ -7,9 +7,7 @@ set -e
 
 #massive thanks to @sneetsher for finding and fixing all of my mistakes!
 
-
-VERSION=$(cat version)
-RELEASES=$(cat releases)
+VERSION=$(head debian/changelog -n1 | sed -e "s/.*(//g" -e "s/-.*//g")
 
 #get a bunch of stuff we'll need to  make the packages
 sudo apt-get install -y dh-make dh-autoreconf bzr-builddeb pbuilder ubuntu-dev-tools debootstrap devscripts

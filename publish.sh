@@ -4,7 +4,7 @@ set -e
 #get all of the packages ready
 NO_BUILD=true ./package.sh "${1}"
 IFS=',' read -r -a DISTRIBUTIONS <<< "${1}"
-VERSION=$(cat version)
+VERSION=$(head debian/changelog -n1 | sed -e "s/.*(//g" -e "s/-.*//g")
 
 #have to have a branch of the code up there or the packages wont work from the ppa
 cd ${DISTRIBUTIONS[0]}/unpinned

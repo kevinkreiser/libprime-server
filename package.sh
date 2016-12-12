@@ -10,7 +10,7 @@ DEBEMAIL='kevinkreiser@gmail.com'
 bzr whoami "${DEBFULLNAME} <${DEBEMAIL}>"
 source /etc/lsb-release
 
-VERSION=$(cat version)
+VERSION=$(head debian/changelog -n1 | sed -e "s/.*(//g" -e "s/-.*//g")
 
 # OPTIONS
 if [[ -z ${1} ]]; then
