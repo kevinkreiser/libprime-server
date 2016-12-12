@@ -1,3 +1,9 @@
+libprime-server (0.6.1-0ubuntu1~unstable1) unstable; urgency=medium
+
+  * interrupt timed out requests for keep alive clients
+
+ -- Kevin Kreiser <kevinkreiser@gmail.com>  Mon, 12 Dec 2016 14:44:09 -0500
+
 libprime-server (0.6.0-0ubuntu1~unstable2) unstable; urgency=medium
 
   * incorrectly named dependency for libczmq3
