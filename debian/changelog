@@ -1,3 +1,9 @@
+libprime-server (0.6.2-0ubuntu1~unstable1) unstable; urgency=medium
+
+  * more flexible header parsing a la the http spec
+
+ -- Kevin Kreiser <kevinkreiser@gmail.com>  Tue, 17 Jan 2017 15:06:22 -0500
+
 libprime-server (0.6.1-0ubuntu1~unstable1) unstable; urgency=medium
 
   * interrupt timed out requests for keep alive clients
