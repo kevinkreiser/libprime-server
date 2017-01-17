@@ -1,4 +1,4 @@
-libprime-server (0.6.2-0ubuntu1~unstable1) unstable; urgency=medium
+libprime-server (0.6.3-0ubuntu1~unstable1) unstable; urgency=medium
 
   * more flexible header parsing a la the http spec
 
