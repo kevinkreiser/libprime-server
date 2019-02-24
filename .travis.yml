@@ -4,6 +4,8 @@ dist: xenial
 before_install:
 install:
 before_script:
+  - add-apt-repository -y "deb http://us.archive.ubuntu.com/ubuntu/ xenial universe multiverse"
+  - add-apt-repository -y "deb http://us.archive.ubuntu.com/ubuntu/ xenial-updates universe multiverse"
 script:
   - ./package.sh ${DISTRIBUTION} ${ARCHITECTURE}
 after_failure:
