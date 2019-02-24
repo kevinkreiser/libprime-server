@@ -1,6 +1,6 @@
 sudo: required
 language: cpp
-dist: trusty
+dist: xenial
 before_install:
 install:
 before_script:
