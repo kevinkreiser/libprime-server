@@ -1,3 +1,13 @@
+libprime-server (0.6.4-0ubuntu1~unstable1) unstable; urgency=medium
+
+  * fixed unresponsive server after client disconnects between identity frame and disconnect message
+  * added support for accept encoding chunked
+  * minimal cmake support
+  * cleaned up clean warnings
+  * macos build support
+
+ -- Kevin Kreiser <kevinkreiser@gmail.com>  Sat, 23 Feb 2019 21:04:00 -0500
+
 libprime-server (0.6.3-0ubuntu1~unstable1) unstable; urgency=medium
 
   * more flexible header parsing a la the http spec
