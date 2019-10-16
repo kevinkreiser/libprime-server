@@ -63,7 +63,7 @@ for with_version in false true; do
 
         #newer ubuntu uses newer zmq packages
 	if [ "${DISTRIBUTION}" == "bionic" ]; then
-		sed -i -e "s/zmq3/zmq4/g" debian/control
+		sed -i -e "s/czmq3/czmq4/g" debian/control
 	fi
 
 	#create and sign the stuff we need to ship the package to launchpad or try building it with pbuilder
