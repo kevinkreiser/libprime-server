@@ -1,3 +1,9 @@
+libprime-server (0.6.5-0ubuntu1~unstable1) unstable; urgency=medium
+
+  * expose http optional command line arguments to http server: enable_logging, max_request_size_bytes, request_timeout_seconds
+
+ -- Kevin Kreiser <kevinkreiser@gmail.com>  Wed, 16 Oct 2019 09:04:00 -0500
+
 libprime-server (0.6.4-0ubuntu1~unstable1) unstable; urgency=medium
 
   * fixed unresponsive server after client disconnects between identity frame and disconnect message

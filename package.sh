@@ -61,6 +61,11 @@ for with_version in false true; do
 		sed -i -e "s/\([b| ]\)prime-server/\1prime-server${VERSION}/g" -e "s/prime-server${VERSION}\([0-9]\+\)/prime-server${VERSION}-\1/g" debian/control debian/changelog
 	fi
 
+        #newer ubuntu uses newer zmq packages
+	if [ "${DISTRIBUTION}" == "bionic" ]; then
+		sed -i -e "s/zmq3/zmq4/g" debian/control
+	fi
+
 	#create and sign the stuff we need to ship the package to launchpad or try building it with pbuilder
 	debuild -S -uc -sa
 	cd -
