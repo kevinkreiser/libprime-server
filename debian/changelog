@@ -1,3 +1,9 @@
+libprime-server (0.6.6-0ubuntu1~unstable1) unstable; urgency=medium
+
+  * fix memory leaks in zmq helpers for contexts, sockets and messages
+
+ -- Kevin Kreiser <kevinkreiser@gmail.com>  Tue, 16 Jun 2020 09:47:00 -0400
+
 libprime-server (0.6.5-0ubuntu1~unstable1) unstable; urgency=medium
 
   * expose http optional command line arguments to http server: enable_logging, max_request_size_bytes, request_timeout_seconds
