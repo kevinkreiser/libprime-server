@@ -62,7 +62,7 @@ for with_version in false true; do
 	fi
 
         #newer ubuntu uses newer zmq packages
-	if [ "${DISTRIBUTION}" == "bionic" ]; then
+	if [[ "${DISTRIBUTION}" == "bionic" || "${DISTRIBUTION}" == "focal" ]]; then
 		sed -i -e "s/czmq3/czmq4/g" debian/control
 	fi
 

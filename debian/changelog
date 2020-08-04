@@ -1,3 +1,9 @@
+libprime-server (0.6.7-0ubuntu1~unstable1) unstable; urgency=medium
+
+  * new release for focal targetting proper libczmq package version
+
+ -- Kevin Kreiser <kevinkreiser@gmail.com>  Tue, 4 Aug 2020 10:59:00 -0400
+
 libprime-server (0.6.6-0ubuntu1~unstable1) unstable; urgency=medium
 
   * fix memory leaks in zmq helpers for contexts, sockets and messages
