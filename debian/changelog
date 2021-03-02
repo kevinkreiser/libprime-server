@@ -1,3 +1,10 @@
+libprime-server (0.7.0-0ubuntu1~unstable1) unstable; urgency=medium
+
+  * added optional health check url with static response
+  * added optional SIGTERM handling for applications who need to gracefully terminate
+
+ -- Kevin Kreiser <kevinkreiser@gmail.com>  Mon, 1 Mar 2021 23:15:00 -0500
+
 libprime-server (0.6.7-0ubuntu1~unstable1) unstable; urgency=medium
 
   * new release for focal targetting proper libczmq package version
