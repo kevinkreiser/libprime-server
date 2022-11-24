@@ -19,7 +19,7 @@ else
 	IFS=',' read -r -a DISTRIBUTIONS <<< "${1}"
 fi
 if [[ -z ${2} ]]; then
-	IFS=',' read -r -a ARCHITECTURES <<< "amd64"
+	IFS=',' read -r -a ARCHITECTURES <<< "$(dpkg --print-architecture)"
 else
 	IFS=',' read -r -a ARCHITECTURES <<< "${2}"
 fi
